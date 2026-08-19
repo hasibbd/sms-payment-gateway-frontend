@@ -5,7 +5,7 @@ import { billingService } from "@/services/billing.service";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { formatDateShort, formatCurrency } from "@/lib/utils";
-import { Receipt, DollarSign, Download, Eye } from "lucide-react";
+import { Receipt, Download, Eye } from "lucide-react";
 import { TableSkeleton } from "@/components/shared/loading-skeleton";
 
 export default function AdminInvoicesPage() {

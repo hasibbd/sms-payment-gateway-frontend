@@ -11,7 +11,7 @@ import { SearchFilter } from "@/components/shared/search-filter";
 import { Pagination } from "@/components/shared/pagination";
 import { InvoiceDetailModal } from "@/components/dashboard/invoice-detail-modal";
 import { formatDateShort, formatCurrency } from "@/lib/utils";
-import { Receipt, CreditCard, Eye, Download, DollarSign } from "lucide-react";
+import { Receipt, CreditCard, Eye, Download } from "lucide-react";
 import { TableSkeleton } from "@/components/shared/loading-skeleton";
 
 export default function BillingPage() {

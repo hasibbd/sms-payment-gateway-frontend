@@ -75,7 +75,7 @@ export default function DevicesPage() {
             Registered Android Phone Gateway Nodes
           </h1>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-            Physical mobile devices running the PayVerify Android App that collect and ingest bank/MFS SMS notifications.
+            Physical mobile devices running the PayPulse Android App that collect and ingest bank/MFS SMS notifications.
           </p>
         </div>
 

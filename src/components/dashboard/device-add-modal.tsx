@@ -53,7 +53,7 @@ export function DeviceAddModal({ isOpen, onClose, onSuccess }: DeviceAddModalPro
       description={
         step === "input"
           ? "Connect a physical Android phone to collect and parse incoming financial SMS messages."
-          : "Scan the QR code with the PayVerify Gateway Android App or enter credentials manually."
+          : "Scan the QR code with the PayPulse Gateway Android App or enter credentials manually."
       }
       maxWidth="md"
     >
@@ -78,7 +78,7 @@ export function DeviceAddModal({ isOpen, onClose, onSuccess }: DeviceAddModalPro
               Quick Setup Overview
             </h4>
             <ol className="list-decimal list-inside space-y-1 pl-1 text-[11px]">
-              <li>Install PayVerify Android App APK on target device.</li>
+              <li>Install PayPulse Android App APK on target device.</li>
               <li>Grant Notification listener and SMS reading permissions.</li>
               <li>Scan generated QR Code to bind device node to your account.</li>
             </ol>

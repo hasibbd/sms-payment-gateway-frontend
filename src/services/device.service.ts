@@ -46,7 +46,7 @@ export const deviceService = {
       const newDevId = `DEV-ANDROID-${Math.floor(10000 + Math.random() * 90000)}`;
       const regKey = `REGKEY-${Math.random().toString(36).substring(2, 12).toUpperCase()}-${Date.now().toString(36)}`;
       const qrPayload = JSON.stringify({
-        server_url: "https://api.payverify.io/api/v1/device",
+        server_url: "https://api.paypulse.io/api/v1/device",
         device_id: newDevId,
         registration_key: regKey,
       });

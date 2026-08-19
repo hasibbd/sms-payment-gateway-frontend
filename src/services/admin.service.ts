@@ -1,5 +1,5 @@
 import { apiClient } from "@/lib/api/api-client";
-import { AdminStats, Package, PaginatedResponse, User } from "@/types";
+import { AdminStats, Package, PaginatedResponse, SmsParserConfig, User } from "@/types";
 import { MOCK_PACKAGES } from "./package.service";
 
 export const MOCK_ADMIN_STATS: AdminStats = {
@@ -50,39 +50,20 @@ export const MOCK_ADMIN_USERS: User[] = [
   {
     id: 1,
     name: "System Administrator",
-    email: "admin@payverify.io",
+    email: "admin@sms.com",
     role: "admin",
     status: "active",
     created_at: "2026-01-01T00:00:00Z",
   },
   {
     id: 2,
-    name: "Merchant Store Manager",
-    email: "merchant@payverify.io",
+    name: "Demo Merchant User",
+    email: "user1@sms.com",
     role: "user",
     status: "active",
-    mobile: "+1 (555) 234-5678",
-    company: "FinTech Store Ltd.",
+    mobile: "+880 1800000000",
+    company: "SMS Gateway Store",
     created_at: "2026-02-01T00:00:00Z",
-  },
-  {
-    id: 3,
-    name: "Rahim Tech Ltd",
-    email: "rahim@techstore.bd",
-    role: "user",
-    status: "active",
-    mobile: "+880 1711 000111",
-    company: "Rahim E-Commerce",
-    created_at: "2026-03-12T00:00:00Z",
-  },
-  {
-    id: 4,
-    name: "Fashion Hub Online",
-    email: "billing@fashionhub.com",
-    role: "user",
-    status: "suspended",
-    company: "Fashion Hub BD",
-    created_at: "2026-04-05T00:00:00Z",
   },
 ];
 
@@ -168,5 +149,113 @@ export const adminService = {
       MOCK_PACKAGES.push(newPkg);
       return { message: "Package created successfully.", package: newPkg };
     }
+  },
+
+  async getParsers(): Promise<SmsParserConfig[]> {
+    try {
+      const response = await apiClient.get<{ data: SmsParserConfig[] }>("/admin/parsers");
+      return response.data.data;
+    } catch {
+      return [
+        {
+          id: "1",
+          name: "bKash Merchant Parser",
+          code: "bkash",
+          provider: "bkash",
+          sender_pattern: "bKash",
+          trx_id_regex: "/TrxID\\s+([A-Z0-9]+)/i",
+          amount_regex: "/Tk\\s+([0-9,]+(\\.[0-9]{2})?)/i",
+          allowed_package_ids: ["starter", "growth", "enterprise"],
+          is_active: true,
+          priority: 1,
+        },
+        {
+          id: "2",
+          name: "Nagad Merchant Parser",
+          code: "nagad",
+          provider: "nagad",
+          sender_pattern: "Nagad",
+          trx_id_regex: "/TxnID:\\s*([A-Z0-9]+)/i",
+          amount_regex: "/Amount:\\s*Tk\\s*([0-9,]+(\\.[0-9]{2})?)/i",
+          allowed_package_ids: ["starter", "growth", "enterprise"],
+          is_active: true,
+          priority: 2,
+        },
+        {
+          id: "3",
+          name: "DBBL Rocket Parser",
+          code: "rocket",
+          provider: "rocket",
+          sender_pattern: "16216",
+          trx_id_regex: "/TxnId:\\s*([0-9]+)/i",
+          amount_regex: "/Tk\\s*([0-9,]+(\\.[0-9]{2})?)/i",
+          allowed_package_ids: ["growth", "enterprise"],
+          is_active: true,
+          priority: 3,
+        },
+        {
+          id: "4",
+          name: "UCB Upay Parser",
+          code: "upay",
+          provider: "upay",
+          sender_pattern: "Upay",
+          trx_id_regex: "/TrxID:\\s*([A-Z0-9]+)/i",
+          amount_regex: "/Tk\\s*([0-9,]+(\\.[0-9]{2})?)/i",
+          allowed_package_ids: ["growth", "enterprise"],
+          is_active: true,
+          priority: 4,
+        },
+        {
+          id: "5",
+          name: "Bank SMS Parser (Islami/City/BRAC)",
+          code: "bank",
+          provider: "bank",
+          sender_pattern: "BankSMS",
+          trx_id_regex: "/Ref:\\s*([A-Z0-9]+)/i",
+          amount_regex: "/Cr\\s*BDT\\s*([0-9,]+(\\.[0-9]{2})?)/i",
+          allowed_package_ids: ["enterprise"],
+          is_active: true,
+          priority: 5,
+        },
+      ];
+    }
+  },
+
+  async saveParser(parserData: Partial<SmsParserConfig>): Promise<{ message: string; data: SmsParserConfig }> {
+    if (parserData.id) {
+      const response = await apiClient.put(`/admin/parsers/${parserData.id}`, parserData);
+      return response.data;
+    }
+    const response = await apiClient.post("/admin/parsers", parserData);
+    return response.data;
+  },
+
+  async toggleParserStatus(parserId: string | number): Promise<{ message: string; data: SmsParserConfig }> {
+    const response = await apiClient.post(`/admin/parsers/${parserId}/toggle-status`);
+    return response.data;
+  },
+
+  async testParser(payload: {
+    sender: string;
+    message: string;
+    trx_id_regex?: string;
+    amount_regex?: string;
+    phone_regex?: string;
+    date_time_regex?: string;
+    type_regex?: string;
+  }): Promise<{
+    data: {
+      sender: string;
+      message: string;
+      extracted_trx_id: string | null;
+      extracted_amount: number | null;
+      extracted_phone: string | null;
+      extracted_date_time: string | null;
+      extracted_type: string | null;
+      is_valid_match: boolean;
+    };
+  }> {
+    const response = await apiClient.post("/admin/parsers/test", payload);
+    return response.data;
   },
 };

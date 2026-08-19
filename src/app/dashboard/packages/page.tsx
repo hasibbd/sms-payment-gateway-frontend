@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatCurrency, formatNumber } from "@/lib/utils";
-import { Check, Sparkles, Smartphone, Globe, MessageSquare, ShieldCheck, ArrowRight } from "lucide-react";
+import { Check, Sparkles, Smartphone, Globe, MessageSquare, ShieldCheck, ArrowRight, CheckCircle2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { CardSkeleton } from "@/components/shared/loading-skeleton";
@@ -68,51 +68,59 @@ export default function PackagesPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
         {packages.map((pkg) => {
           const isCurrent = pkg.id === currentPackageId;
-          const isPopular = pkg.slug === "business-pro";
+          const isPopular = pkg.slug === "business-pro" || pkg.name.toLowerCase().includes("business");
 
           return (
             <Card
               key={pkg.id}
-              className={`relative flex flex-col justify-between transition-all duration-300 ${
+              className={`flex flex-col justify-between transition-all duration-300 ${
                 isCurrent
                   ? "border-2 border-blue-600 dark:border-blue-500 shadow-xl bg-blue-50/10 dark:bg-blue-950/20"
                   : isPopular
                   ? "border-amber-500/50 shadow-lg"
-                  : ""
+                  : "border-slate-200 dark:border-slate-800"
               }`}
             >
-              {isCurrent && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <Badge variant="info" className="px-3 py-1 bg-blue-600 text-white font-bold uppercase tracking-wider text-[10px]">
-                    Current Active Plan
-                  </Badge>
+              <CardHeader className="pt-6 pb-2">
+                <div className="flex items-center justify-between gap-2 mb-3">
+                  {isCurrent ? (
+                    <Badge className="bg-blue-600 text-white font-bold uppercase tracking-wider text-[10px] px-2.5 py-1 gap-1 shadow-sm">
+                      <CheckCircle2 className="w-3 h-3 text-white" />
+                      <span>Current Active Plan</span>
+                    </Badge>
+                  ) : isPopular ? (
+                    <Badge className="bg-amber-500 text-slate-950 font-bold uppercase tracking-wider text-[10px] px-2.5 py-1 gap-1 shadow-sm">
+                      <Sparkles className="w-3 h-3" />
+                      <span>Recommended Choice</span>
+                    </Badge>
+                  ) : (
+                    <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">
+                      Standard Tier
+                    </span>
+                  )}
                 </div>
-              )}
 
-              {isPopular && !isCurrent && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <Badge variant="warning" className="px-3 py-1 bg-amber-500 text-slate-950 font-bold uppercase tracking-wider text-[10px] gap-1">
-                    <Sparkles className="w-3 h-3" /> Recommended Choice
-                  </Badge>
-                </div>
-              )}
-
-              <CardHeader className="pt-8">
-                <CardTitle className="text-xl font-bold text-slate-900 dark:text-slate-100">{pkg.name}</CardTitle>
-                <CardDescription className="text-xs line-clamp-2 mt-1">{pkg.description}</CardDescription>
+                <CardTitle className="text-xl font-bold text-slate-900 dark:text-slate-100">
+                  {pkg.name}
+                </CardTitle>
+                <CardDescription className="text-xs line-clamp-2 mt-1">
+                  {pkg.description || "Automated SMS parsing & API verification tier"}
+                </CardDescription>
 
                 <div className="pt-4 flex items-baseline gap-1">
                   <span className="text-3xl font-extrabold text-slate-900 dark:text-slate-50 font-mono">
                     {formatCurrency(pkg.price)}
                   </span>
-                  <span className="text-xs text-slate-500 dark:text-slate-400">/ {pkg.validity_days} Days</span>
+                  <span className="text-xs text-slate-500 dark:text-slate-400">
+                    / {pkg.validity_days} Days
+                  </span>
                 </div>
               </CardHeader>
 
-              <CardContent className="space-y-6 flex-1 flex flex-col justify-between">
+              <CardContent className="space-y-6 flex-1 flex flex-col justify-between pt-2">
                 {/* Resource Limits List */}
                 <div className="space-y-2.5 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 text-xs">
                   <div className="flex items-center justify-between">
@@ -162,10 +170,17 @@ export default function PackagesPage() {
                   onClick={() => handleSubscribe(pkg.id, pkg.name)}
                   disabled={isCurrent || subscribingId === pkg.id}
                   variant={isCurrent ? "outline" : isPopular ? "primary" : "secondary"}
-                  className="w-full h-11 text-xs font-semibold gap-2 mt-4"
+                  className={`w-full h-11 text-xs font-semibold gap-2 mt-4 ${
+                    isCurrent
+                      ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-950/30"
+                      : ""
+                  }`}
                 >
                   {isCurrent ? (
-                    "Active Current Package"
+                    <>
+                      <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                      <span>Active Current Package</span>
+                    </>
                   ) : subscribingId === pkg.id ? (
                     "Processing..."
                   ) : (

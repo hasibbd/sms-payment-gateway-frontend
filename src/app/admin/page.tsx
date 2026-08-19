@@ -1,21 +1,25 @@
 "use client";
 
+import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { adminService } from "@/services/admin.service";
 import { StatCard } from "@/components/shared/stat-card";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { formatCurrency, formatNumber } from "@/lib/utils";
 import {
   Users,
   CreditCard,
   DollarSign,
   Smartphone,
-  Globe,
   MessageSquare,
   Zap,
   ShieldCheck,
+  PackageCheck,
+  Receipt,
+  ArrowRight,
+  Shield,
   Activity,
-  AlertTriangle,
 } from "lucide-react";
 import {
   ResponsiveContainer,
@@ -43,18 +47,106 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <div className="flex items-center gap-2">
-          <span className="bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-bold uppercase text-[10px] px-2 py-0.5 rounded tracking-widest">
-            Executive Portal
-          </span>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-bold uppercase text-[10px] px-2 py-0.5 rounded tracking-widest">
+              Executive Portal
+            </span>
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 mt-1">
+            System-Wide Platform Executive Dashboard
+          </h1>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            Platform SaaS revenue, active gateway node fleet status, and global SMS processing metrics.
+          </p>
         </div>
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 mt-1">
-          System-Wide Platform Executive Dashboard
-        </h1>
-        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-          Platform SaaS revenue, active gateway node fleet status, and global SMS processing metrics.
-        </p>
+
+        <Link href="/admin/packages">
+          <Button className="gap-2 text-xs font-semibold">
+            <PackageCheck className="w-4 h-4" />
+            <span>Manage Package Tiers</span>
+          </Button>
+        </Link>
+      </div>
+
+      {/* Quick Admin Management Hub Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <Link href="/admin/packages" className="group">
+          <Card className="hover:border-blue-500/50 hover:shadow-md transition-all">
+            <CardContent className="p-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
+                  <PackageCheck className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                    Package Plans
+                  </h3>
+                  <p className="text-[11px] text-slate-500">Resource quotas & pricing</p>
+                </div>
+              </div>
+              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/admin/users" className="group">
+          <Card className="hover:border-indigo-500/50 hover:shadow-md transition-all">
+            <CardContent className="p-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/60 dark:text-indigo-400">
+                  <Users className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                    User Accounts
+                  </h3>
+                  <p className="text-[11px] text-slate-500">{overview.total_users} Merchants registered</p>
+                </div>
+              </div>
+              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-1 transition-all" />
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/admin/invoices" className="group">
+          <Card className="hover:border-emerald-500/50 hover:shadow-md transition-all">
+            <CardContent className="p-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
+                  <Receipt className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                    Invoices & Bills
+                  </h3>
+                  <p className="text-[11px] text-slate-500">{overview.unpaid_invoices} Unpaid invoices</p>
+                </div>
+              </div>
+              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-emerald-600 group-hover:translate-x-1 transition-all" />
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/admin/subscriptions" className="group">
+          <Card className="hover:border-purple-500/50 hover:shadow-md transition-all">
+            <CardContent className="p-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-xl bg-purple-50 text-purple-600 dark:bg-purple-950/60 dark:text-purple-400">
+                  <CreditCard className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+                    Subscriptions
+                  </h3>
+                  <p className="text-[11px] text-slate-500">{overview.active_subscriptions} Active merchant plans</p>
+                </div>
+              </div>
+              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-purple-600 group-hover:translate-x-1 transition-all" />
+            </CardContent>
+          </Card>
+        </Link>
       </div>
 
       {/* Financial & User Stat Cards Grid */}
@@ -64,7 +156,7 @@ export default function AdminDashboardPage() {
           value={formatCurrency(overview.total_revenue)}
           change={`+${formatCurrency(overview.monthly_revenue)} this month`}
           changeType="positive"
-          icon={<DollarSign className="w-4 h-4" />}
+          icon={<Receipt className="w-4 h-4" />}
           subtitle={`${overview.unpaid_invoices} Unpaid Invoices`}
         />
         <StatCard

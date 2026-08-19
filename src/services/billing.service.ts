@@ -108,7 +108,7 @@ export const billingService = {
       return response.data;
     } catch {
       return {
-        payment_url: `https://checkout.payverify.io/session/inv_${invoiceId}`,
+        payment_url: `https://checkout.paypulse.io/session/inv_${invoiceId}`,
         payment_session: `SESS_${Math.random().toString(36).substring(2, 10).toUpperCase()}`,
       };
     }

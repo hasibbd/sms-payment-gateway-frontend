@@ -17,11 +17,13 @@ const fontMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PayVerify | SMS Transaction Verification SaaS Platform",
+  title: "PayPulse | Automated Payment Verification Gateway",
   description:
-    "Automated SMS transaction parsing, mobile phone gateway node management, and secure payment verification APIs for B2B e-commerce merchants.",
-  keywords: ["SMS Verification", "Payment Gateway", "bKash Verification", "Nagad Verification", "FinTech SaaS"],
+    "Real-time SMS transaction parsing, Android phone gateway node management, and automated payment verification for bKash, Nagad, Rocket, Upay & Bank SMS.",
+  keywords: ["PayPulse", "SMS Payment Gateway", "bKash Automation", "Nagad Payment Verification", "Payment Gateway"],
 };
+
+import { RealtimeProvider } from "@/components/providers/realtime-provider";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -30,7 +32,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <QueryProvider>
             <AuthProvider>
-              <ToastProvider>{children}</ToastProvider>
+              <RealtimeProvider>
+                <ToastProvider>{children}</ToastProvider>
+              </RealtimeProvider>
             </AuthProvider>
           </QueryProvider>
         </ThemeProvider>

@@ -60,7 +60,7 @@ export default function WebhooksPage() {
           <CardTitle className="text-lg font-bold flex items-center gap-2">
             <Webhook className="w-5 h-5 text-emerald-500" /> Webhook Global Signing Secret
           </CardTitle>
-          <CardDescription>Use this HMAC secret to verify X-PayVerify-Signature headers</CardDescription>
+          <CardDescription>Use this HMAC secret to verify X-PayPulse-Signature headers</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <SecretReveal secret="whsec_live_992104810294819" label="Global Webhook Secret" />

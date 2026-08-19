@@ -17,11 +17,15 @@ import {
   Globe,
   Zap,
   CheckCircle2,
-  AlertTriangle,
   Webhook,
   ArrowUpRight,
   RefreshCcw,
   Sparkles,
+  CreditCard,
+  Receipt,
+  FileCheck2,
+  ShieldAlert,
+  ArrowRight,
 } from "lucide-react";
 import {
   ResponsiveContainer,
@@ -112,12 +116,12 @@ export default function UserDashboardPage() {
             <div className="flex flex-wrap items-center gap-3">
               <Link href="/dashboard/billing">
                 <Button variant="outline" size="sm" className="border-slate-700 text-white hover:bg-slate-800">
-                  Renew Subscription
+                  Billing & Invoices
                 </Button>
               </Link>
-              <Link href="/dashboard/packages">
+              <Link href="/dashboard/subscription">
                 <Button size="sm" className="bg-blue-600 hover:bg-blue-500 text-white gap-1.5 shadow-md shadow-blue-600/30">
-                  <span>Upgrade Package</span>
+                  <span>Manage Subscription</span>
                   <ArrowUpRight className="w-4 h-4" />
                 </Button>
               </Link>
@@ -125,6 +129,85 @@ export default function UserDashboardPage() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Merchant Management Quick Hub Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <Link href="/dashboard/subscription" className="group">
+          <Card className="hover:border-blue-500/50 hover:shadow-md transition-all">
+            <CardContent className="p-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
+                  <CreditCard className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                    Subscription & Plan
+                  </h3>
+                  <p className="text-[11px] text-slate-500">Quotas & Upgrade</p>
+                </div>
+              </div>
+              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/dashboard/devices" className="group">
+          <Card className="hover:border-emerald-500/50 hover:shadow-md transition-all">
+            <CardContent className="p-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
+                  <Smartphone className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                    Android Devices
+                  </h3>
+                  <p className="text-[11px] text-slate-500">{usage.devices_used} of {usage.device_limit} active</p>
+                </div>
+              </div>
+              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-emerald-600 group-hover:translate-x-1 transition-all" />
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/dashboard/websites" className="group">
+          <Card className="hover:border-indigo-500/50 hover:shadow-md transition-all">
+            <CardContent className="p-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/60 dark:text-indigo-400">
+                  <Globe className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                    Connected Websites
+                  </h3>
+                  <p className="text-[11px] text-slate-500">{usage.websites_used} of {usage.website_limit} connected</p>
+                </div>
+              </div>
+              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-1 transition-all" />
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/dashboard/sms" className="group">
+          <Card className="hover:border-purple-500/50 hover:shadow-md transition-all">
+            <CardContent className="p-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-xl bg-purple-50 text-purple-600 dark:bg-purple-950/60 dark:text-purple-400">
+                  <MessageSquare className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+                    SMS Logs & Audit
+                  </h3>
+                  <p className="text-[11px] text-slate-500">{usage.sms_used} SMS collected</p>
+                </div>
+              </div>
+              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-purple-600 group-hover:translate-x-1 transition-all" />
+            </CardContent>
+          </Card>
+        </Link>
+      </div>
 
       {/* Usage Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

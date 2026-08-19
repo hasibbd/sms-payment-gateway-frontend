@@ -25,37 +25,87 @@ import {
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/components/providers/auth-provider";
 
+interface NavGroup {
+  category: string;
+  items: {
+    label: string;
+    href: string;
+    icon: React.ComponentType<{ className?: string }>;
+  }[];
+}
+
 export function AppSidebar() {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const { user } = useAuth();
   const isAdminPath = pathname.startsWith("/admin");
 
-  const userNavItems = [
-    { label: "Overview", href: "/dashboard", icon: LayoutDashboard },
-    { label: "Packages", href: "/dashboard/packages", icon: PackageCheck },
-    { label: "Subscription", href: "/dashboard/subscription", icon: CreditCard },
-    { label: "Billing & Invoices", href: "/dashboard/billing", icon: Receipt },
-    { label: "Android Devices", href: "/dashboard/devices", icon: Smartphone },
-    { label: "Connected Websites", href: "/dashboard/websites", icon: Globe },
-    { label: "Developer & API Docs", href: "/dashboard/developer", icon: Code2 },
-    { label: "SMS Logs", href: "/dashboard/sms", icon: MessageSquareText },
-    { label: "Transactions", href: "/dashboard/transactions", icon: ShieldAlert },
-    { label: "Verification Logs", href: "/dashboard/verifications", icon: FileCheck2 },
-    { label: "Webhooks", href: "/dashboard/webhooks", icon: Webhook },
-    { label: "Profile & Security", href: "/dashboard/profile", icon: User },
+  const userNavGroups: NavGroup[] = [
+    {
+      category: "OVERVIEW",
+      items: [
+        { label: "Dashboard Overview", href: "/dashboard", icon: LayoutDashboard },
+      ],
+    },
+    {
+      category: "PLANS & BILLING",
+      items: [
+        { label: "Subscription & Quotas", href: "/dashboard/subscription", icon: CreditCard },
+        { label: "Packages Tiers", href: "/dashboard/packages", icon: PackageCheck },
+        { label: "Billing & Invoices", href: "/dashboard/billing", icon: Receipt },
+      ],
+    },
+    {
+      category: "GATEWAY & INTEGRATION",
+      items: [
+        { label: "Android Devices", href: "/dashboard/devices", icon: Smartphone },
+        { label: "Connected Websites", href: "/dashboard/websites", icon: Globe },
+        { label: "Developer & API Docs", href: "/dashboard/developer", icon: Code2 },
+      ],
+    },
+    {
+      category: "LOGS & AUDIT",
+      items: [
+        { label: "SMS Logs", href: "/dashboard/sms", icon: MessageSquareText },
+        { label: "Verification Logs", href: "/dashboard/verifications", icon: FileCheck2 },
+        { label: "Transactions Ledger", href: "/dashboard/transactions", icon: ShieldAlert },
+        { label: "Webhooks Dispatch", href: "/dashboard/webhooks", icon: Webhook },
+      ],
+    },
+    {
+      category: "ACCOUNT",
+      items: [
+        { label: "Profile & Security", href: "/dashboard/profile", icon: User },
+      ],
+    },
   ];
 
-  const adminNavItems = [
-    { label: "Executive Dashboard", href: "/admin", icon: LayoutDashboard },
-    { label: "Package Plans", href: "/admin/packages", icon: PackageCheck },
-    { label: "User Accounts", href: "/admin/users", icon: Users },
-    { label: "Subscriptions", href: "/admin/subscriptions", icon: CreditCard },
-    { label: "Invoices & Revenue", href: "/admin/invoices", icon: Receipt },
-    { label: "System Diagnostics", href: "/admin/monitoring", icon: Activity },
+  const adminNavGroups: NavGroup[] = [
+    {
+      category: "OVERVIEW",
+      items: [
+        { label: "Executive Dashboard", href: "/admin", icon: LayoutDashboard },
+      ],
+    },
+    {
+      category: "MANAGEMENT & BILLING",
+      items: [
+        { label: "Package Plans", href: "/admin/packages", icon: PackageCheck },
+        { label: "SMS Parsers & Rules", href: "/admin/parsers", icon: Code2 },
+        { label: "User Accounts", href: "/admin/users", icon: Users },
+        { label: "Invoices & Revenue", href: "/admin/invoices", icon: Receipt },
+        { label: "Subscriptions", href: "/admin/subscriptions", icon: CreditCard },
+      ],
+    },
+    {
+      category: "SYSTEM & OPERATIONS",
+      items: [
+        { label: "System Diagnostics", href: "/admin/monitoring", icon: Activity },
+      ],
+    },
   ];
 
-  const navItems = isAdminPath ? adminNavItems : userNavItems;
+  const navGroups = isAdminPath ? adminNavGroups : userNavGroups;
 
   return (
     <aside
@@ -73,10 +123,10 @@ export function AppSidebar() {
           {!collapsed && (
             <div className="flex flex-col">
               <span className="text-sm font-bold text-slate-900 dark:text-slate-100 tracking-tight">
-                PayVerify
+                PayPulse
               </span>
               <span className="text-[10px] font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-widest">
-                {isAdminPath ? "Admin Portal" : "SMS SaaS"}
+                {isAdminPath ? "Admin Portal" : "Merchant SaaS"}
               </span>
             </div>
           )}
@@ -92,34 +142,52 @@ export function AppSidebar() {
       </div>
 
       {/* Nav List */}
-      <div className="flex-1 overflow-y-auto py-4 px-3 space-y-1">
-        {navItems.map((item) => {
-          const isActive = pathname === item.href || (item.href !== "/dashboard" && item.href !== "/admin" && pathname.startsWith(item.href));
-          const Icon = item.icon;
+      <div className="flex-1 overflow-y-auto py-4 px-3 space-y-6">
+        {navGroups.map((group) => (
+          <div key={group.category} className="space-y-1">
+            {!collapsed && (
+              <h4 className="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1.5">
+                {group.category}
+              </h4>
+            )}
+            {group.items.map((item) => {
+              const isActive =
+                pathname === item.href ||
+                (item.href !== "/dashboard" && item.href !== "/admin" && pathname.startsWith(item.href));
+              const Icon = item.icon;
 
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2.5 text-xs font-medium transition-all group relative",
-                isActive
-                  ? "bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 font-semibold shadow-xs"
-                  : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/80 dark:hover:text-slate-200"
-              )}
-              title={collapsed ? item.label : undefined}
-            >
-              <Icon className={cn("w-4 h-4 shrink-0 transition-colors", isActive ? "text-blue-600 dark:text-blue-400" : "text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300")} />
-              {!collapsed && <span>{item.label}</span>}
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    "flex items-center gap-3 rounded-lg px-3 py-2 text-xs font-medium transition-all group relative",
+                    isActive
+                      ? "bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 font-semibold shadow-xs"
+                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/80 dark:hover:text-slate-200"
+                  )}
+                  title={collapsed ? item.label : undefined}
+                >
+                  <Icon
+                    className={cn(
+                      "w-4 h-4 shrink-0 transition-colors",
+                      isActive
+                        ? "text-blue-600 dark:text-blue-400"
+                        : "text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300"
+                    )}
+                  />
+                  {!collapsed && <span>{item.label}</span>}
 
-              {collapsed && (
-                <div className="absolute left-full ml-2 hidden rounded-md bg-slate-900 px-2 py-1 text-xs text-white group-hover:block whitespace-nowrap z-50 shadow-lg">
-                  {item.label}
-                </div>
-              )}
-            </Link>
-          );
-        })}
+                  {collapsed && (
+                    <div className="absolute left-full ml-2 hidden rounded-md bg-slate-900 px-2 py-1 text-xs text-white group-hover:block whitespace-nowrap z-50 shadow-lg">
+                      {item.label}
+                    </div>
+                  )}
+                </Link>
+              );
+            })}
+          </div>
+        ))}
       </div>
 
       {/* Footer / Role indicator */}

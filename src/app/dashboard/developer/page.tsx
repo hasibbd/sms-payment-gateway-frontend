@@ -146,13 +146,13 @@ export default function DeveloperPage() {
         </CardHeader>
         <CardContent className="space-y-3 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
           <p>
-            When a transaction event occurs, PayVerify dispatches an HTTP POST request to your registered Webhook Endpoint containing the header:
+            When a transaction event occurs, PayPulse dispatches an HTTP POST request to your registered Webhook Endpoint containing the header:
           </p>
-          <div className="p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-900 text-slate-100 font-mono text-xs">
-            X-PayVerify-Signature: sha256_hash_value
-          </div>
-          <p>
-            Compute an HMAC-SHA256 hash of the raw HTTP request body using your <strong>Webhook Secret</strong> as the secret key. Verify that it matches <code className="font-mono text-blue-500">X-PayVerify-Signature</code> to prevent spoofing.
+          <pre className="p-3 rounded-lg bg-slate-950 text-blue-400 font-mono text-xs overflow-x-auto">
+            X-PayPulse-Signature: sha256_hash_value
+          </pre>
+          <p className="text-slate-600 dark:text-slate-400">
+            Compute an HMAC-SHA256 hash of the raw HTTP request body using your <strong>Webhook Secret</strong> as the secret key. Verify that it matches <code className="font-mono text-blue-500">X-PayPulse-Signature</code> to prevent spoofing.
           </p>
         </CardContent>
       </Card>

@@ -52,9 +52,9 @@ export const authService = {
       return {
         id: 2,
         name: "Merchant Manager",
-        email: "merchant@payverify.io",
+        email: "merchant@paypulse.io",
         mobile: "+1 (555) 987-6543",
-        company: "PayVerify Merchant Ltd.",
+        company: "PayPulse Merchant Ltd.",
         role: "user",
         status: "active",
         created_at: "2026-02-01T00:00:00Z",

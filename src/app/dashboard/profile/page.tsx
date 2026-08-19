@@ -11,7 +11,7 @@ import { toast } from "@/hooks/use-toast";
 export default function ProfilePage() {
   const { user } = useAuth();
   const [name, setName] = useState(user?.name || "Merchant Manager");
-  const [email, setEmail] = useState(user?.email || "merchant@payverify.io");
+  const [email, setEmail] = useState(user?.email || "merchant@paypulse.io");
   const [mobile, setMobile] = useState(user?.mobile || "+1 (555) 234-5678");
   const [company, setCompany] = useState(user?.company || "FinTech Store Ltd.");
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
@@ -193,7 +193,7 @@ export default function ProfilePage() {
           <CardTitle className="text-lg font-bold flex items-center gap-2">
             <Laptop className="w-5 h-5 text-emerald-500" /> Active Browser Sessions
           </CardTitle>
-          <CardDescription>Devices logged into your PayVerify merchant account</CardDescription>
+          <CardDescription>Devices logged into your PayPulse merchant account</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-3 text-xs">

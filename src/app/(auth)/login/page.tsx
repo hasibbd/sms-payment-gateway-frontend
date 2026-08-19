@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Shield, Mail, Lock, ArrowRight, CheckCircle2 } from "lucide-react";
+import { Shield, Mail, Lock, ArrowRight, CheckCircle2, UserCheck, ShieldCheck } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -35,8 +35,8 @@ export default function LoginPage() {
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "merchant@payverify.io",
-      password: "password123",
+      email: "user1@sms.com",
+      password: "123456",
     },
   });
 
@@ -69,11 +69,11 @@ export default function LoginPage() {
 
   const setDemoRole = (role: "user" | "admin") => {
     if (role === "admin") {
-      setValue("email", "admin@payverify.io");
-      setValue("password", "admin123456");
+      setValue("email", "admin@sms.com");
+      setValue("password", "123456");
     } else {
-      setValue("email", "merchant@payverify.io");
-      setValue("password", "password123");
+      setValue("email", "user1@sms.com");
+      setValue("password", "123456");
     }
   };
 
@@ -82,14 +82,16 @@ export default function LoginPage() {
       <div className="w-full max-w-md space-y-6">
         {/* Brand Logo */}
         <div className="flex flex-col items-center text-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/20 mb-3">
-            <Shield className="w-6 h-6" />
-          </div>
+          <Link href="/" className="inline-flex items-center gap-2 group mb-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform">
+              <Shield className="w-6 h-6" />
+            </div>
+          </Link>
           <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
-            Sign in to PayVerify
+            Sign in to PayPulse
           </h1>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-            SMS Transaction Verification SaaS Platform
+            SMS Transaction Verification SaaS Gateway
           </p>
         </div>
 
@@ -135,44 +137,62 @@ export default function LoginPage() {
               </Button>
             </form>
 
-            {/* Quick Demo Credentials Switcher */}
-            <div className="mt-6 pt-5 border-t border-slate-100 dark:border-slate-800 space-y-2">
-              <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block text-center">
-                One-Click Demo Authentication
-              </span>
+            {/* Prominent Quick Demo Credentials Switcher */}
+            <div className="mt-6 pt-5 border-t border-slate-100 dark:border-slate-800 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                  One-Click Demo Accounts
+                </span>
+                <span className="text-[10px] text-blue-600 dark:text-blue-400 font-mono font-bold">
+                  Password: 123456
+                </span>
+              </div>
+
               <div className="grid grid-cols-2 gap-2">
-                <Button
+                <button
                   type="button"
-                  variant="outline"
-                  size="sm"
                   onClick={() => setDemoRole("user")}
-                  className="text-xs gap-1.5"
+                  className="flex flex-col items-start p-3 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/30 hover:bg-blue-100/60 dark:hover:bg-blue-900/50 transition-all text-left group"
                 >
-                  <CheckCircle2 className="w-3.5 h-3.5 text-blue-500" />
-                  User Account
-                </Button>
-                <Button
+                  <div className="flex items-center gap-1.5 font-bold text-xs text-blue-700 dark:text-blue-300">
+                    <UserCheck className="w-3.5 h-3.5 text-blue-600" />
+                    <span>User Merchant</span>
+                  </div>
+                  <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 mt-1">
+                    user1@sms.com
+                  </span>
+                </button>
+
+                <button
                   type="button"
-                  variant="outline"
-                  size="sm"
                   onClick={() => setDemoRole("admin")}
-                  className="text-xs gap-1.5"
+                  className="flex flex-col items-start p-3 rounded-xl border border-indigo-200 dark:border-indigo-900/50 bg-indigo-50/50 dark:bg-indigo-950/30 hover:bg-indigo-100/60 dark:hover:bg-indigo-900/50 transition-all text-left group"
                 >
-                  <Shield className="w-3.5 h-3.5 text-indigo-500" />
-                  Admin Account
-                </Button>
+                  <div className="flex items-center gap-1.5 font-bold text-xs text-indigo-700 dark:text-indigo-300">
+                    <ShieldCheck className="w-3.5 h-3.5 text-indigo-600" />
+                    <span>System Admin</span>
+                  </div>
+                  <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 mt-1">
+                    admin@sms.com
+                  </span>
+                </button>
               </div>
             </div>
           </CardContent>
         </Card>
 
         {/* Footer Link */}
-        <p className="text-center text-xs text-slate-500 dark:text-slate-400">
-          Don&apos;t have a merchant account?{" "}
-          <Link href="/register" className="font-semibold text-blue-600 dark:text-blue-400 hover:underline">
-            Register now
+        <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 px-1">
+          <Link href="/" className="hover:underline font-medium text-slate-600 dark:text-slate-300">
+            ← Back to SaaS Portal
           </Link>
-        </p>
+          <p>
+            New Merchant?{" "}
+            <Link href="/register" className="font-semibold text-blue-600 dark:text-blue-400 hover:underline">
+              Register here
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

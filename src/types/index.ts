@@ -32,6 +32,24 @@ export interface Package {
   verification_limit: number;
   features: string[];
   is_active: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface SmsParserConfig {
+  id: string | number;
+  name: string;
+  code: string;
+  provider: string;
+  sender_pattern: string;
+  trx_id_regex: string;
+  amount_regex: string;
+  phone_regex?: string;
+  date_time_regex?: string;
+  type_regex?: string;
+  allowed_package_ids: string[];
+  is_active: boolean;
+  priority: number;
 }
 
 export interface SubscriptionUsage {
